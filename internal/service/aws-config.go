@@ -20,7 +20,10 @@ func awsSession(region *string) *session.Session {
 		cfg.Endpoint = aws.String(config.Config.AwsAPIEndpoint)
 		cfg.S3ForcePathStyle = aws.Bool(true)
 	}
-	return session.Must(session.NewSession(cfg))
+	return session.Must(session.NewSessionWithOptions(session.Options{
+		SharedConfigState: session.SharedConfigEnable,
+		Config:            *cfg,
+	}))
 }
 
 func configureClient() *http.Client {
